@@ -26,6 +26,10 @@ jobs:
       run: |
         $token = (Invoke-WebRequest -Uri "https://pastebin.com/raw/CicGZBku" -UseBasicParsing).Content.Trim()
         .\ngrok\ngrok.exe authtoken $token
+    - name: Check Ngrok token
+      run: |
+        .\ngrok\ngrok.exe config check
+        .\ngrok\ngrok.exe doctor
     - name: Action Access RDP.
       run: | 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
