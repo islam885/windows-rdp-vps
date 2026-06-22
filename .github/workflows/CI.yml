@@ -4,7 +4,6 @@ on: workflow_dispatch
 
 jobs:
   build:
-
     runs-on: windows-latest
     timeout-minutes: 9999
 
@@ -24,9 +23,9 @@ jobs:
     - name: Extract Ngrok File.
       run: Expand-Archive ngrok.zip
     - name: Connect Ngrok.
-      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
-      env:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      run: |
+        $token = (Invoke-WebRequest -Uri "https://pastebin.com/raw/CicGZBku" -UseBasicParsing).Content.Trim()
+        .\ngrok\ngrok.exe authtoken $token
     - name: Action Access RDP.
       run: | 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
